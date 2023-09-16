@@ -1,1 +1,0 @@
-Hello, mu name is Nur!
