@@ -1,7 +1,7 @@
 import requests
-
+URL = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_JrCb3T3AUE2bUTq850AHulJSraibsTbg0gz3RO3S&currencies="
 #Функция проверки верности вводимых пользователям валют
-def check_input(message: str, currencies: dict)->str:
+def check_currency(message: str, currencies: dict)->str:
     while True:
         text = input(message).strip().upper()
         for key in currencies:
@@ -11,12 +11,15 @@ def check_input(message: str, currencies: dict)->str:
 
 
 #Провверка вводимых пользовател данных по количеству валют
-def is_number():
+def get_Number():
     while True:
-        amount = input("Введите сумму валюты:")
-        if amount.isdigit() == True:
-            return amount
-    print('Вы ввели не число, попробуйте ещё раз')
+        getNumber = input("Введите сумму валюты:")
+        try:
+            getNumber = float(getNumber)
+        except ValueError:
+            print('Вы ввели неверные данные, попробуйте ещё раз')
+        else:
+            return getNumber
 
 
 #Загрузка справочика валют из aptzar
@@ -33,7 +36,6 @@ def converter(amount: float, from_currency: str, to_currency: str, currencies: d
     return round(amount * coefficient, 2)
 
 
-URL = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_JrCb3T3AUE2bUTq850AHulJSraibsTbg0gz3RO3S&currencies="
 print("Добро пожаловать в конвертер валют!")
 print("""
 Инструкция:
@@ -47,9 +49,9 @@ CURRENCIES = get_actual_currencies()
 for key in CURRENCIES:
     print(f'* {key}')
 #Ввод данных
-current_currency = check_input('Введите исходную валюту:', CURRENCIES)
-result_currency = check_input('Введите искомую валюту: ', CURRENCIES)
-amount = is_number()
+current_currency = check_currency('Введите исходную валюту:', CURRENCIES)
+result_currency = check_currency('Введите искомую валюту: ', CURRENCIES)
+amount = get_Number()
 #Расчёт результата
 result = converter(float(amount), current_currency, result_currency, CURRENCIES)
 #Вывод результара
